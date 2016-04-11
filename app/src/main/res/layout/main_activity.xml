@@ -1,0 +1,31 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!--<include layout="@layout/activity_main"/>-->
+
+    <!--android:name ="com.digitallifelab.environmentmonitor.PointsListFragment"-->
+
+    <fragment
+        android:name="com.digitallifelab.environmentmonitor.PointsListFragment"
+        android:id="@+id/fragment_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_points_list"
+        android:tag="list_fragment_tag"/>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/my_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/navigation_layout"
+        app:menu="@menu/drawer_view" />
+
+</android.support.v4.widget.DrawerLayout>

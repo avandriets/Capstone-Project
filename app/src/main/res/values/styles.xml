@@ -1,0 +1,63 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="CustomProgress" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--<style name="CustomProgress" parent="Theme.AppCompat.Light.Dialog">-->
+    <!--<item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>-->
+    <!--<item name="android:textColorPrimary">#FFFFFF</item>-->
+    <!--<item name="android:backgroundDimEnabled">false</item>-->
+    <!--<item name="android:textColor">#FFFFFF</item>-->
+    <!--<item name="android:textStyle">normal</item>-->
+    <!--<item name="android:textSize">12sp</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomAlertDialogStyle">-->
+    <!--<item name="android:bottomBright">@color/transparent</item>-->
+    <!--<item name="android:bottomDark">@color/transparent</item>-->
+    <!--<item name="android:bottomMedium">@color/transparent</item>-->
+    <!--<item name="android:centerBright">@color/transparent</item>-->
+    <!--<item name="android:centerDark">@color/transparent</item>-->
+    <!--<item name="android:centerMedium">@color/transparent</item>-->
+    <!--<item name="android:fullBright">@color/transparent</item>-->
+    <!--<item name="android:fullDark">@color/transparent</item>-->
+    <!--<item name="android:topBright">@color/transparent</item>-->
+    <!--<item name="android:topDark">@color/transparent</item>-->
+    <!--<item name="android:gravity">center</item>-->
+    <!--</style>-->
+
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:colorBackground">#000000</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/colorPrimaryLight</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabTextAppearance">@style/MyCustomTextAppearance</item>
+        <item name="tabBackground">@color/colorPrimary</item>
+        <item name="tabMaxWidth">0dp</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+    </style>
+
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">?android:textColorPrimaryInverse</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+</resources>

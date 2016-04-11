@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:background="?android:attr/selectableItemBackground"
+              android:clickable="true"
+              tools:targetApi="honeycomb">
+
+<ImageView
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_image_icon"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="86dp"
+    android:layout_height="130dp"
+    android:contentDescription="@string/photo_description"
+    android:orientation="vertical"
+    android:scaleType="centerCrop"
+    android:layout_margin="8dp" />
+
+    </LinearLayout>
