@@ -50,12 +50,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_weight="0.02"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp">
+        android:paddingBottom="@dimen/small_activity_horizontal_padding"
+        android:paddingLeft="@dimen/small_activity_vertical_padding"
+        android:paddingRight="@dimen/small_activity_vertical_padding"
+        android:paddingTop="@dimen/small_activity_horizontal_padding"
+        android:paddingEnd="@dimen/small_activity_vertical_padding"
+        android:paddingStart="@dimen/small_activity_vertical_padding">
 
         <EditText
             android:id="@+id/etMessage"
@@ -73,13 +73,17 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
-            android:background="#00ffffff"
+            android:background="@color/button_background"
             android:gravity="center_vertical|right"
             android:src="@android:drawable/ic_menu_send"
             android:text="@string/send_message"
             android:textSize="18sp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp" />
+            android:paddingEnd="@dimen/small_activity_vertical_padding"
+            android:paddingStart="@dimen/small_activity_vertical_padding"
+            android:paddingLeft="@dimen/small_activity_vertical_padding"
+            android:paddingRight="@dimen/small_activity_vertical_padding"
+            android:contentDescription="@string/send_message"
+            />
     </RelativeLayout>
 
 </LinearLayout>

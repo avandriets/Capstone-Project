@@ -19,6 +19,7 @@ import com.digitallifelab.environmentmonitor.Data.EnvironmentService;
 import com.digitallifelab.environmentmonitor.Data.MessagesStore;
 import com.digitallifelab.environmentmonitor.Data.PicturesStore;
 import com.digitallifelab.environmentmonitor.Data.PointsStore;
+import com.digitallifelab.environmentmonitor.Data.ifSendNotification;
 import com.digitallifelab.environmentmonitor.DetailPointActivity;
 import com.digitallifelab.environmentmonitor.MainActivity;
 import com.digitallifelab.environmentmonitor.R;
@@ -139,12 +140,19 @@ public class MyGcmListenerService extends GcmListenerService {
 
                     String pointData = data.getString(EXTRA_MESSAGE);
                     Log.i(TAG, "ARRAY: " + pointData);
+                    boolean SendNotifyIfPkDoesntExist = false;
+
+                    List<MessagesStore> listOfObjects = dbInstance.getDatabaseHelper().getMessagesDataDao().queryForEq(MessagesStore.SERVER_ID, pointData);
+
+                    if(listOfObjects == null || listOfObjects.size() == 0){
+                        SendNotifyIfPkDoesntExist = true;
+                    }
 
                     JSONArray pointsArray = getPointFromServer(pointData);
 
                     if(pointsArray != null) {
 
-                        List<PointsStore> objects_List = NetworkServiceUtility.ParsePointsJsonArray(pointsArray, dbInstance, this);
+                        List<PointsStore> objects_List = NetworkServiceUtility.ParsePointsJsonArray(pointsArray, dbInstance, this, new ifSendNotification());
 
 
                         getContentResolver().insert(EnvironmentMonitorContract.POINTS_CONTENT_URI, null);
@@ -160,7 +168,7 @@ public class MyGcmListenerService extends GcmListenerService {
                             }
                         }
 
-                        if(sendNotify && displayNotifications)
+                        if(sendNotify && displayNotifications && SendNotifyIfPkDoesntExist)
                             sendNotification(getString(R.string.new_message_notyfication), pointId);
                     }
                 }else if(data.containsKey(EXTRA_POINT)){
@@ -170,10 +178,12 @@ public class MyGcmListenerService extends GcmListenerService {
                     JSONArray pointsArray = getPointFromServer(pointData);
 
                     if(pointsArray != null)
-                        NetworkServiceUtility.ParsePointsJsonArray(pointsArray, dbInstance, this);
+                        NetworkServiceUtility.ParsePointsJsonArray(pointsArray, dbInstance, this, new ifSendNotification());
 
                     getContentResolver().insert(EnvironmentMonitorContract.POINTS_CONTENT_URI, null);
                 }
+
+                NetworkServiceUtility.updateWidgets(this);
 
                 if(destroyHelper){
                     OpenHelperManager.releaseHelper();

@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.digitallifelab.environmentmonitor.Data.AccountsStore;
 import com.digitallifelab.environmentmonitor.Data.EnvironmentMonitorContract;
 import com.digitallifelab.environmentmonitor.Data.EnvironmentService;
 import com.digitallifelab.environmentmonitor.Data.MessagesStore;
 import com.digitallifelab.environmentmonitor.Data.PicturesStore;
 import com.digitallifelab.environmentmonitor.Data.PointsStore;
+import com.digitallifelab.environmentmonitor.Data.ifSendNotification;
+import com.digitallifelab.environmentmonitor.sync.EMonitorSyncAdapter;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -179,7 +182,7 @@ public class NetworkServiceUtility {
 
 
         message.pollution_mark = owner.getServer_id();
-        Call<ResponseBody> retPoint = service.postMessage( message, authString);
+        Call<ResponseBody> retPoint = service.postMessage(message, authString);
 
         RuntimeExceptionDao<MessagesStore, Long>    daoMessage = dbInstance.getDatabaseHelper().getMessagesDataDao();
 
@@ -471,7 +474,7 @@ public class NetworkServiceUtility {
         return picStore;
     }
 
-    public static List<MessagesStore> ParseMessageJsonArray(JSONArray jsonMessagesArray, PointsStore point, DbInstance dbInstance, Context context){
+    public static List<MessagesStore> ParseMessageJsonArray(JSONArray jsonMessagesArray, PointsStore point, DbInstance dbInstance, Context context, ifSendNotification newAmount){
 
         ArrayList<MessagesStore> messageStore = new ArrayList<MessagesStore>();
 
@@ -498,7 +501,13 @@ public class NetworkServiceUtility {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
+        String my_Email = AccountsStore.getActiveUser().getEmail();
+
         int i = 0;
+
+        int amountNewMessages = 0;
+
+        List<MessagesStore> listMessages = dbInstance.getDatabaseHelper().getMessagesDataDao().queryForAll();
 
         while (i < jsonMessagesArray.length()) {
 
@@ -523,6 +532,19 @@ public class NetworkServiceUtility {
                 mess_user_name           = messageItem.getString(M_USER_NAME);
                 mess_user_id             = messageItem.getLong(M_USER_ID);
                 mess_user_email          = messageItem.getString(M_USER_EMAIL);
+
+                if(point.getUser_email().equals(my_Email)) {
+                    boolean wasFound = false;
+
+                    for (int ii = 0; ii < listMessages.size(); ii++) {
+                        if (listMessages.get(ii).getServer_id() == mess_picture_id) {
+                            wasFound = true;
+                        }
+                    }
+
+                    if (!wasFound)
+                        amountNewMessages++;
+                }
 
                 gmtTime = sdf.parse(messageItem.getString(M_CREATED_AT));
                 fromGmt = new Date(gmtTime.getTime() + TimeZone.getDefault().getOffset(gmtTime.getTime()));
@@ -567,10 +589,13 @@ public class NetworkServiceUtility {
 //            context.getContentResolver().insert(EnvironmentMonitorContract.POINTS_CONTENT_URI, null);
 //        }
 
+        if(amountNewMessages > 0)
+            newAmount.newAmount += amountNewMessages;
+
         return messageStore;
     }
 
-    public static List<PointsStore> ParsePointsJsonArray(JSONArray jsonPointsArray, DbInstance dbInstance, Context context){
+    public static List<PointsStore> ParsePointsJsonArray(JSONArray jsonPointsArray, DbInstance dbInstance, Context context, ifSendNotification newMessages){
 
         ArrayList<PointsStore> pointsStore = new ArrayList<PointsStore>();
 
@@ -683,7 +708,7 @@ public class NetworkServiceUtility {
                 ParsePicturesJsonArray(picturesArray, newPs, dbInstance, context);
 
                 JSONArray messagesArray = pointItem.getJSONArray(OPM_MESSAGES_LIST);
-                ParseMessageJsonArray(messagesArray, newPs, dbInstance, context);
+                ParseMessageJsonArray(messagesArray, newPs, dbInstance, context, newMessages);
 
             } catch (JSONException | ParseException e) {
                 //Log.e(LOG_TAG, e.getMessage());
@@ -693,5 +718,13 @@ public class NetworkServiceUtility {
         }
 
         return pointsStore;
+    }
+
+    public static void updateWidgets(Context context) {
+
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(EMonitorSyncAdapter.ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
     }
 }

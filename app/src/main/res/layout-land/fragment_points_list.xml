@@ -32,7 +32,7 @@
         android:layout_alignParentTop="false"
         android:layout_centerHorizontal="true"
         android:elevation="4dp"
-        android:background="#eeeeee">
+        android:background="@color/gray_background">
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/col"
@@ -62,15 +62,19 @@
                 app:layout_anchor="@+id/idPointsListView"
                 app:layout_anchorGravity="fill" />
 
-        </android.support.design.widget.CoordinatorLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_add_white_24dp"
+                android:contentDescription="@string/add_new_point"
+                app:layout_behavior="com.digitallifelab.environmentmonitor.Utils.ScrollingFABBehavior"
+                android:stateListAnimator="@anim/fab_state_list_anim"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_add_white_24dp" />
+
+        </android.support.design.widget.CoordinatorLayout>
 
     </FrameLayout>
 </RelativeLayout>

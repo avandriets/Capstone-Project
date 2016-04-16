@@ -18,7 +18,7 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/small_activity_horizontal_margin"
         android:visibility="gone"/>
 
     <ScrollView
@@ -49,14 +49,15 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/signin_label"
                 android:id="@+id/textView4"
-                android:layout_marginTop="24dp"/>
+                android:layout_marginTop="@dimen/big_activity_vertical_margin"/>
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"/>
+                android:layout_marginTop="@dimen/big_activity_vertical_margin"
+                android:layout_marginBottom="@dimen/big_activity_vertical_margin"
+                android:contentDescription="@string/login_by_google"/>
 
         </LinearLayout>
     </ScrollView>

@@ -1,9 +1,21 @@
 package com.digitallifelab.environmentmonitor;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.view.Gravity;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class DetailPointActivity extends AppCompatActivity {
 
@@ -29,9 +41,8 @@ public class DetailPointActivity extends AppCompatActivity {
                     .commit();
 
             // Being here means we are in animation mode
-            supportPostponeEnterTransition();
+            //supportPostponeEnterTransition();
         }
-
     }
 
 }

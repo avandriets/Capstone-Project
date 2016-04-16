@@ -2,7 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-
+    signingConfigs {
+        config {
+            keyAlias 'key_for_review'
+            keyPassword '123456'
+            storeFile file('key_for_review.jks')
+            storePassword '123456'
+        }
+    }
 
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -18,10 +25,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
+            signingConfig signingConfigs.config
         }
         debug {
-
         }
     }
     productFlavors {

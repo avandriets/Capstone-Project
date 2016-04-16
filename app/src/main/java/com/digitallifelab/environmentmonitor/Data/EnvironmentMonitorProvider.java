@@ -64,14 +64,22 @@ public class EnvironmentMonitorProvider extends ContentProvider {
                 // build your query
 
 
-                QueryBuilder<PointsStore, Long> qb = dbInstance.getDatabaseHelper().getPointsDataDao().queryBuilder();
+                QueryBuilder<PointsStore, Long> qb;// = dbInstance.getDatabaseHelper().getPointsDataDao().queryBuilder();
 
                 // when you are done, prepare your query and build an iterator
                 CloseableIterator<PointsStore> iterator = null;
                 Cursor cursor = null;
                 try {
 
-                    iterator = dbInstance.getDatabaseHelper().getPointsDataDao().iterator();
+                    if(dbInstance.getDatabaseHelper() == null){
+                        dbInstance = new DbInstance();
+                        dbInstance.SetDBHelper(getContext());
+                    }
+
+                    qb = dbInstance.getDatabaseHelper().getPointsDataDao().queryBuilder();
+
+                    iterator = qb.orderBy(MessagesStore.UPDATED_AT,false).iterator(); //dbInstance.getDatabaseHelper().getPointsDataDao().iterator();
+                    //iterator = dbInstance.getDatabaseHelper().getPointsDataDao().iterator();
                     AndroidDatabaseResults results = (AndroidDatabaseResults)iterator.getRawResults();
                     cursor = results.getRawCursor();
 
@@ -80,7 +88,12 @@ public class EnvironmentMonitorProvider extends ContentProvider {
 
                 } catch (SQLException e) {
                     e.printStackTrace();
-                } finally {
+                }
+                catch (java.sql.SQLException e) {
+                    e.printStackTrace();
+                }
+                finally
+                {
                     //iterator.closeQuietly();
                 }
                 return cursor;

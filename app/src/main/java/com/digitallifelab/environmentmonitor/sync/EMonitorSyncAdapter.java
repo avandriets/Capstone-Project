@@ -2,14 +2,20 @@ package com.digitallifelab.environmentmonitor.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.NotificationManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.digitallifelab.environmentmonitor.Data.AccountsStore;
 import com.digitallifelab.environmentmonitor.Data.EnvironmentMonitorContract;
@@ -17,14 +23,13 @@ import com.digitallifelab.environmentmonitor.Data.EnvironmentService;
 import com.digitallifelab.environmentmonitor.Data.MessagesStore;
 import com.digitallifelab.environmentmonitor.Data.PicturesStore;
 import com.digitallifelab.environmentmonitor.Data.PointsStore;
+import com.digitallifelab.environmentmonitor.Data.ifSendNotification;
 import com.digitallifelab.environmentmonitor.R;
 import com.digitallifelab.environmentmonitor.Utils.DbInstance;
 import com.digitallifelab.environmentmonitor.Utils.ManageAccountsToken;
 import com.digitallifelab.environmentmonitor.Utils.NetworkServiceUtility;
 import com.digitallifelab.environmentmonitor.Utils.Utility;
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.digitallifelab.environmentmonitor.gcm.MyGcmListenerService;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -74,9 +79,15 @@ public class EMonitorSyncAdapter extends AbstractThreadedSyncAdapter {
 
         if(acc != null && ManageAccountsToken.TokenWasGet(acc, getContext())) {
 
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String displayNotificationsKey = getContext().getString(R.string.pref_enable_notifications_key);
+            boolean displayNotifications = prefs.getBoolean(displayNotificationsKey, Boolean.parseBoolean(getContext().getString(R.string.pref_enable_notifications_default)));
+
             if(dbInstance.getDatabaseHelper() == null){
                 dbInstance.SetDBHelper(getContext());
             }
+
+            long countRec = dbInstance.getDatabaseHelper().getPointsDataDao().countOf();
 
             String authString = "Bearer " + acc.getMy_server_access_token();
             //GET DATA from server
@@ -87,11 +98,32 @@ public class EMonitorSyncAdapter extends AbstractThreadedSyncAdapter {
 
             EnvironmentService service = retrofit.create(EnvironmentService.class);
 
-            GetDataFromServer(service, authString, dbInstance);
+            ifSendNotification newMessages = new ifSendNotification();
+
+            GetDataFromServer(service, authString, dbInstance, newMessages);
+
+            if(newMessages.newAmount > 0 && countRec != 0 && displayNotifications){
+
+                NotificationManager mNotificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+                Bitmap largeIcon = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.ic_launcher);
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getContext())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setLargeIcon(largeIcon)
+                                .setContentTitle(getContext().getString(R.string.app_name))
+                                .setStyle(new NotificationCompat.BigTextStyle().bigText("You have " + newMessages.newAmount + " messages"))
+                                .setContentText("You have " + newMessages.newAmount + " messages")
+                                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+                mNotificationManager.notify(MyGcmListenerService.NOTIFICATION_ID, mBuilder.build());
+            }
 
             SendDataToServer(service, authString, dbInstance);
 
             getContext().getContentResolver().insert(EnvironmentMonitorContract.POINTS_CONTENT_URI, null);
+
+            NetworkServiceUtility.updateWidgets(getContext());
 
             if(destroyHelper){
                 OpenHelperManager.releaseHelper();
@@ -172,7 +204,7 @@ public class EMonitorSyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    private void GetDataFromServer(EnvironmentService service, String authString, DbInstance dbInstance){
+    private void GetDataFromServer(EnvironmentService service, String authString, DbInstance dbInstance,ifSendNotification newMessages){
 
         Bundle data = new Bundle();
 
@@ -189,7 +221,7 @@ public class EMonitorSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 JSONArray pointsArray = new JSONArray(jsonString);
                 if (pointsArray != null) {
-                    NetworkServiceUtility.ParsePointsJsonArray(pointsArray, dbInstance, getContext());
+                    NetworkServiceUtility.ParsePointsJsonArray(pointsArray, dbInstance, getContext(), newMessages);
                 }
 
             } else {

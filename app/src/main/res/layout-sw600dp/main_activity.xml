@@ -85,7 +85,7 @@
             android:layout_alignRight="@id/cardviewAligner"
             android:layout_alignTop="@id/cardviewAligner"
             android:layout_alignBottom="@id/cardviewAligner"
-            android:background="#eeeeee"
+            android:background="@color/gray_background"
             android:elevation="4dp">
 
         </FrameLayout>
@@ -99,7 +99,10 @@
             android:src="@drawable/ic_add_white_24dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="false"
-            android:layout_alignRight="@+id/fragment_list_container_tablet" />
+            android:layout_alignRight="@+id/fragment_list_container_tablet"
+            android:contentDescription="@string/add_new_point"
+            app:layout_behavior="com.digitallifelab.environmentmonitor.Utils.ScrollingFABBehavior"
+            android:stateListAnimator="@anim/fab_state_list_anim"/>
 
     </RelativeLayout>
 

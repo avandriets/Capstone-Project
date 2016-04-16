@@ -19,12 +19,19 @@
               android:layout_width="match_parent"
               android:layout_height="192dp"
               android:background="?attr/colorPrimary"
-              android:padding="16dp"
+              android:padding="@dimen/activity_horizontal_padding"
               android:theme="@style/ThemeOverlay.AppCompat.Dark"
               android:orientation="vertical"
               android:gravity="bottom">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
+        <!--android:id="@+id/imageViewCreatorSigned"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:src="@drawable/ic_account_circle_white_48dp"-->
+        <!--android:layout_gravity="center"/>-->
+
+    <com.digitallifelab.environmentmonitor.CustomView.RoundedImageView
         android:id="@+id/imageViewCreatorSigned"
         android:layout_width="100dp"
         android:layout_height="100dp"

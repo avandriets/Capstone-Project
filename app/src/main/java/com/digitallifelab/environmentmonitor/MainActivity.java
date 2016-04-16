@@ -1,17 +1,21 @@
 package com.digitallifelab.environmentmonitor;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -496,15 +500,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onDestroy();
 
         Log.d(LOG_TAG, "On destroy helper && GApiClient.");
-        if (dbInstance.getDatabaseHelper() != null) {
-            OpenHelperManager.releaseHelper();
-
-            dbInstance.releaseHelper();
-        }
-
-        if (instance.get_GoogleApiClient() != null && instance.get_GoogleApiClient().isConnected()) {
-            instance.get_GoogleApiClient().disconnect();
-        }
+//        if (dbInstance.getDatabaseHelper() != null) {
+//            OpenHelperManager.releaseHelper();
+//
+//            dbInstance.releaseHelper();
+//        }
+//
+//        if (instance.get_GoogleApiClient() != null && instance.get_GoogleApiClient().isConnected()) {
+//            instance.get_GoogleApiClient().disconnect();
+//        }
     }
 
     @Override
@@ -661,10 +665,33 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
 
         } else {
+
             Intent intent = new Intent(this, DetailPointActivity.class);
             intent.putExtra(KEY_POINT_ID,pId);
 
-            ActivityCompat.startActivity(this, intent, null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                Pair<View, String> pair1 = Pair.create((View)vh.tvHeadline, vh.tvHeadline.getTransitionName());
+                Pair<View, String> pair2 = Pair.create((View)vh.tvDescription, vh.tvDescription.getTransitionName());
+                Pair<View, String> pair3 = Pair.create((View) vh.tvAuthor, vh.tvAuthor.getTransitionName());
+                Pair<View, String> pair4 = Pair.create((View) vh.tvCreateDateTime, vh.tvCreateDateTime.getTransitionName());
+
+
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this, pair1, pair2, pair3, pair4);
+
+//                Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+//                        vh.tvHeadline,
+//                        vh.tvHeadline.getTransitionName()
+//                        ).toBundle();
+//                startActivity(intent, bundle);
+
+                startActivity(intent, options.toBundle());
+            } else {
+
+                ActivityCompat.startActivity(this, intent, null);
+            }
+
         }
     }
 }

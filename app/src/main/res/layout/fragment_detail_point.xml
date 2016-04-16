@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="24dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="@dimen/big_activity_horizontal_padding"
+        android:paddingTop="@dimen/small_activity_horizontal_padding">
 
         <TextView
             android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
             android:text="@string/photo_of_point"
             android:id="@+id/textView3"
             android:textSize="12sp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:textStyle="bold" />
 
         <RelativeLayout
@@ -44,44 +44,47 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_marginTop="@dimen/big_activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:id="@+id/headlineTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lorem Ipsum dolor sit amet"
+                android:text=""
                 android:textIsSelectable="true"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:transitionName="headline"/>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="@dimen/activity_horizontal_margin">
 
                 <TextView
                     android:id="@+id/textAuthor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Author"
+                    android:text=""
                     android:singleLine="true"
                     android:layout_weight="70"
                     android:gravity="left"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:transitionName="author"/>
 
                 <TextView
                     android:id="@+id/dateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="01-01-2015"
+                    android:text=""
                     android:singleLine="true"
                     android:layout_weight="30"
                     android:gravity="right"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:transitionName="datetime"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -91,7 +94,7 @@
             android:layout_height="wrap_content"
             android:text="@string/hint_description"
             android:id="@+id/textView2"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -99,10 +102,11 @@
             android:id="@+id/descriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/point_description_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textSize="14sp" />
+            android:text=""
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:textSize="14sp"
+            android:transitionName="description"/>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

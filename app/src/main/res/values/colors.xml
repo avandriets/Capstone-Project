@@ -13,4 +13,8 @@
     <color name="divider">#B6B6B6</color>
 
     <color name="transparent">#00ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="images_list_background">#e0e0e0</color>
+    <color name="gray_background">#eeeeee</color>
+    <color name="button_background">#00ffffff</color>
 </resources>

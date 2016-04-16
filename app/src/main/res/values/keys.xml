@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="client_id_server" translatable="false">""</string>
-    <string name="my_server_client_id" translatable="false">""</string>
-    <string name="my_server_secret" translatable="false">""</string>
-    <string name="geo_API_KEY" translatable="false">""</string>
+    <string name="client_id_server" translatable="false">"177090516036-rqsnb103oa7od3c3c7lmg0spks2di4fc.apps.googleusercontent.com"</string>
+    <string name="my_server_client_id" translatable="false">"wq2JEaYtAdTYCy4EuNaxjzvW2lyOD94KRUNafDAw"</string>
+    <string name="my_server_secret" translatable="false">"Q5mu13Ovp61UI4MLfoNdper16bSvHAb2q4hcfL1kWvYQ6fOocQ982syqk1gTXbVccdzFt09TJWftlprNrK0zOBsdn5X1iqcwut3vBRdy9qB7tntYJikBOGalWqWun3lG"</string>
+    <string name="geo_API_KEY" translatable="false">"AIzaSyAYjGXjOPtSpITxk7MByBuIFhiQAsBhzh4"</string>
 </resources>

@@ -7,10 +7,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!--<include layout="@layout/activity_main"/>-->
-
-    <!--android:name ="com.digitallifelab.environmentmonitor.PointsListFragment"-->
-
     <fragment
         android:name="com.digitallifelab.environmentmonitor.PointsListFragment"
         android:id="@+id/fragment_list_container"

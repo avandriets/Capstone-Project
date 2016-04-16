@@ -16,14 +16,17 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -352,6 +355,7 @@ public class DetailPointActivityFragment extends Fragment implements LoaderManag
             //tvDateTime.setText(Utility.MillSecToString(data.getLong(data.getColumnIndex(EnvironmentMonitorContract.Points.CREATED_AT))));
             tvDateTime.setText(Utility.getFriendlyDayString(getActivity(), data.getLong(data.getColumnIndex(EnvironmentMonitorContract.Points.CREATED_AT)), false));
 
+            shareText += "; " + Utility.getFriendlyDayString(getActivity(), data.getLong(data.getColumnIndex(EnvironmentMonitorContract.Points.CREATED_AT)), false);
             tvAuthor.setText(data.getString(data.getColumnIndex(EnvironmentMonitorContract.Points.FIRST_NAME)) + " "
                     + data.getString(data.getColumnIndex(EnvironmentMonitorContract.Points.LAST_NAME)));
 
@@ -368,6 +372,9 @@ public class DetailPointActivityFragment extends Fragment implements LoaderManag
 
                 for (PicturesStore pic : list) {
                     picStore.add(pic);
+
+                    if(pic.getFull_photo_url() != null)
+                        shareText += "; " + pic.getFull_photo_url();
                 }
 
                 rcAdapter.ChangeItemsSource(picStore);
