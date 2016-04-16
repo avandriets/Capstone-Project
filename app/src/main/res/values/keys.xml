@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="client_id_server" translatable="false">""</string>
+    <string name="my_server_client_id" translatable="false">""</string>
+    <string name="my_server_secret" translatable="false">""</string>
+    <string name="geo_API_KEY" translatable="false">""</string>
+</resources>
